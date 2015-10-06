@@ -10,10 +10,20 @@ import sqlcmd_homework.view.View;
  * Created by Sims on 12/09/2015.
  */
 public class MainController {
-    public static void main(String[] args) {
-        View view = new Console();
-        DatabaseManager manager = new JDBCDatabaseManager();
 
+    private View view;
+    private DatabaseManager manager;
+
+    public MainController(View view, DatabaseManager manager){
+        this.view = view;
+        this.manager = manager;
+    }
+
+    public void run(){
+        connectToDb();
+    }
+
+    private void connectToDb() {
         view.write("Hi, welcome to the database manager.");
         view.write("Enter 'database|userName|password' to connect to database:");
         while (true) {
@@ -34,7 +44,7 @@ public class MainController {
                 view.write("Try again:");
             }
         }
-            view.write("Success!");
-        }
+        view.write("Success!");
     }
+}
 
