@@ -1,9 +1,6 @@
 package sqlcmd_homework.controller;
 
 import sqlcmd_homework.model.DatabaseManager;
-import sqlcmd_homework.model.InMemoryDatabaseManager;
-import sqlcmd_homework.model.JDBCDatabaseManager;
-import sqlcmd_homework.view.Console;
 import sqlcmd_homework.view.View;
 
 /**
@@ -27,24 +24,32 @@ public class MainController {
         view.write("Hi, welcome to the database manager.");
         view.write("Enter 'database|userName|password' to connect to database:");
         while (true) {
-            String string = view.read();
-            String[] data = string.split("\\|");
-            String databaseName = data[0];
-            String userName = data[1];
-            String password = data[2];
             try {
+                String string = view.read();
+                String[] data = string.split("\\|");
+                if (data.length != 3){
+                    throw new IllegalArgumentException("Invalid amount of parameters, separated by '|', expected 3, but you've entered: " + data.length);
+                }
+                String databaseName = data[0];
+                String userName = data[1];
+                String password = data[2];
+
                 manager.connect(databaseName, userName, password);
                 break;
             } catch (Exception e) {
-                String message = e.getMessage();
-                if (e.getCause() != null) {
-                    message += " " + e.getCause().getMessage();
-                }
-                view.write("Something went wrong: " + message);
-                view.write("Try again:");
+                printError(e);
             }
         }
         view.write("Success!");
+    }
+
+    private void printError(Exception e) {
+        String message = e.getMessage();
+        if (e.getCause() != null) {
+            message += " " + e.getCause().getMessage();
+        }
+        view.write("Something went wrong: " + message);
+        view.write("Try again:");
     }
 }
 
