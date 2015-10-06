@@ -3,6 +3,8 @@ package sqlcmd_homework.controller;
 import sqlcmd_homework.model.DatabaseManager;
 import sqlcmd_homework.view.View;
 
+import java.util.Arrays;
+
 /**
  * Created by Sims on 12/09/2015.
  */
@@ -18,6 +20,32 @@ public class MainController {
 
     public void run(){
         connectToDb();
+        while (true) {
+            view.write("Enter command (or 'help')");
+            String command = view.read();
+
+            if (command.equals("list")) {
+                doList();
+            } else if (command.equals("help")) {
+                doHelp();
+            } else {
+                view.write("Non existing command: " + command);
+            }
+        }
+
+    }
+
+    private void doHelp() {
+        view.write("Existing commands:");
+        view.write("\t 'list' - to show all existing table names");
+        view.write("\t 'help' - to show help for this project");
+    }
+
+    private void doList() {
+        String[] tableNames = manager.getTableNames();
+        String message = Arrays.toString(tableNames);
+        view.write(message);
+
     }
 
     private void connectToDb() {
@@ -45,8 +73,9 @@ public class MainController {
 
     private void printError(Exception e) {
         String message = e.getMessage();
+        Throwable cause = e.getCause();
         if (e.getCause() != null) {
-            message += " " + e.getCause().getMessage();
+            message += " " + cause.getMessage();
         }
         view.write("Something went wrong: " + message);
         view.write("Try again:");
