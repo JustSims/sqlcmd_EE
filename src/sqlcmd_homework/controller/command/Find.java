@@ -1,4 +1,4 @@
-package sqlcmd_homework.controller;
+package sqlcmd_homework.controller.command;
 
 import sqlcmd_homework.controller.command.Command;
 import sqlcmd_homework.model.DataSet;

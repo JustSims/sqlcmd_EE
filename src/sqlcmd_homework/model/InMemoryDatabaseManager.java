@@ -1,10 +1,14 @@
+/*
 package sqlcmd_homework.model;
 
 import java.util.Arrays;
 
-/**
+
+*
  * Created by Sims on 12/09/2015.
- */
+
+
+
 public class InMemoryDatabaseManager implements DatabaseManager{
     public static final String TABLE_NAME = "user";
 
@@ -62,3 +66,5 @@ public class InMemoryDatabaseManager implements DatabaseManager{
         return new String[]{"name", "password", "id"};
     }
 }
+
+*/
