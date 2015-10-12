@@ -1,5 +1,7 @@
 package sqlcmd_homework.controller;
 
+import sqlcmd_homework.controller.command.Command;
+import sqlcmd_homework.controller.command.Exit;
 import sqlcmd_homework.model.DataSet;
 import sqlcmd_homework.model.DatabaseManager;
 import sqlcmd_homework.view.View;
@@ -11,12 +13,14 @@ import java.util.Arrays;
  */
 public class MainController {
 
+    private final Command[] commands;
     private View view;
     private DatabaseManager manager;
 
     public MainController(View view, DatabaseManager manager){
         this.view = view;
         this.manager = manager;
+        this.commands = new Command[] {new Exit(view)};
     }
 
     public void run(){
@@ -29,9 +33,8 @@ public class MainController {
                 showList();
             } else if (command.equals("help")) {
                 showHelp();
-            } else if (command.equals("exit")) {
-                view.write("Bye");
-                System.exit(0);
+            } else if (commands[0].canProcess(command)) {
+                commands[0].process(command);
             } else if (command.startsWith("find")) {
                 findTable(command);
             } else {
