@@ -2,6 +2,7 @@ package sqlcmd_homework.controller;
 
 import sqlcmd_homework.controller.command.Command;
 import sqlcmd_homework.controller.command.Exit;
+import sqlcmd_homework.controller.command.Help;
 import sqlcmd_homework.model.DataSet;
 import sqlcmd_homework.model.DatabaseManager;
 import sqlcmd_homework.view.View;
@@ -20,7 +21,7 @@ public class MainController {
     public MainController(View view, DatabaseManager manager){
         this.view = view;
         this.manager = manager;
-        this.commands = new Command[] {new Exit(view)};
+        this.commands = new Command[] {new Exit(view), new Help(view)};
     }
 
     public void run(){
@@ -31,8 +32,8 @@ public class MainController {
 
             if (command.equals("list")) {
                 showList();
-            } else if (command.equals("help")) {
-                showHelp();
+            } else if (commands[1].canProcess("help")) {
+                commands[1].process(command);
             } else if (commands[0].canProcess(command)) {
                 commands[0].process(command);
             } else if (command.startsWith("find")) {
@@ -75,14 +76,6 @@ public class MainController {
         view.write("-----------------");
         view.write(result);
         view.write("-----------------");
-    }
-
-    private void showHelp() {
-        view.write("Existing commands:");
-        view.write("\t 'list' - to show all existing table names");
-        view.write("\t 'find|tableName' - to show table 'tableName' content");
-        view.write("\t 'help' - to show help for this project");
-        view.write("\t 'exit' - to exit the program");
     }
 
     private void showList() {
