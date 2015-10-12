@@ -19,6 +19,7 @@ public class Help implements Command{
     @Override
     public void process(String command) {
             view.write("Existing commands:");
+            view.write("\t 'connect|databaseName|userName|password - to connect to your database");
             view.write("\t 'list' - to show all existing table names");
             view.write("\t 'find|tableName' - to show table 'tableName' content");
             view.write("\t 'help' - to show help for this project");
