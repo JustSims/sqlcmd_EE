@@ -3,11 +3,11 @@ package sqlcmd_homework.controller;
 import sqlcmd_homework.controller.command.Command;
 import sqlcmd_homework.controller.command.Exit;
 import sqlcmd_homework.controller.command.Help;
+import sqlcmd_homework.controller.command.List;
 import sqlcmd_homework.model.DataSet;
 import sqlcmd_homework.model.DatabaseManager;
 import sqlcmd_homework.view.View;
 
-import java.util.Arrays;
 
 /**
  * Created by Sims on 12/09/2015.
@@ -21,7 +21,7 @@ public class MainController {
     public MainController(View view, DatabaseManager manager){
         this.view = view;
         this.manager = manager;
-        this.commands = new Command[] {new Exit(view), new Help(view)};
+        this.commands = new Command[] {new Exit(view), new Help(view), new List(manager, view)};
     }
 
     public void run(){
@@ -30,9 +30,9 @@ public class MainController {
             view.write("Enter command (or 'help')");
             String command = view.read();
 
-            if (command.equals("list")) {
-                showList();
-            } else if (commands[1].canProcess("help")) {
+            if (commands[2].canProcess(command)) {
+                commands[2].process(command);
+            } else if (commands[1].canProcess(command)) {
                 commands[1].process(command);
             } else if (commands[0].canProcess(command)) {
                 commands[0].process(command);
@@ -76,13 +76,6 @@ public class MainController {
         view.write("-----------------");
         view.write(result);
         view.write("-----------------");
-    }
-
-    private void showList() {
-        String[] tableNames = manager.getTableNames();
-        String message = Arrays.toString(tableNames);
-        view.write(message);
-
     }
 
     private void connectToDb() {

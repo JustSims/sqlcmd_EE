@@ -1,5 +1,4 @@
 package sqlcmd_homework.controller.command;
-
 import sqlcmd_homework.view.View;
 
 /**
