@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Sims on 03.09.2015.
@@ -23,7 +24,7 @@ public abstract class DatabaseManagerTest {
     @Test
     public void testGetAllTableNames(){
         String[] tableNames = manager.getTableNames();
-        assertEquals("[user]", Arrays.toString(tableNames));
+        assertEquals("[user, test]", Arrays.toString(tableNames));
     }
 
     @Test
@@ -84,5 +85,13 @@ public abstract class DatabaseManagerTest {
 
         //then
         assertEquals("[name, password, id]", Arrays.toString(columnNames));
+    }
+
+    @Test
+    public void testIsConnected() {
+        // given
+        // when
+        //then
+        assertTrue(manager.isConnected());
     }
 }
