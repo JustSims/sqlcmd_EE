@@ -1,6 +1,5 @@
 package ua.com.juja.sqlcmd_homework.controller.command;
 
-import ua.com.juja.sqlcmd_homework.controller.command.Command;
 import ua.com.juja.sqlcmd_homework.view.View;
 
 /**

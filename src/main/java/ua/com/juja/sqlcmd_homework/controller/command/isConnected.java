@@ -1,6 +1,6 @@
 package ua.com.juja.sqlcmd_homework.controller.command;
 
-import ua.com.juja.sqlcmd_homework.controller.command.Command;
+
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
 
@@ -23,6 +23,6 @@ public class isConnected implements Command {
 
     @Override
     public void process(String command) {
-        view.write(String.format("You cannot use command '%s', before connecting to database with connect|databaseName|userName|password ", command));
+        view.write(String.format("You cannot use command '%s', before connecting. To enter database type: connect|databaseName|userName|password ", command));
     }
 }

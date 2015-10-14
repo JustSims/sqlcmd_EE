@@ -1,4 +1,4 @@
-package sqlcmd_homework.model;
+package ua.com.juja.sqlcmd_homework.model;
 
 import java.sql.*;
 import java.util.Random;
