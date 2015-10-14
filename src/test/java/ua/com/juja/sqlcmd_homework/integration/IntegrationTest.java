@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import static org.junit.Assert.assertEquals;
 
-
 /**
  * Created by Sims on 13/10/2015.
  */
@@ -17,18 +16,15 @@ public class IntegrationTest {
     private static ByteArrayOutputStream out;
 
     @BeforeClass
-    public static void setUp(){
+    public static void setUp() {
         in = new ConfigurableInputStream();
         out = new ByteArrayOutputStream();
-
-
         System.setIn(in);
         System.setOut(new PrintStream(out));
     }
 
-
     @Test
-    public void testExit(){
+    public void testExit() {
         //given
         in.add("help");
         in.add("exit");
