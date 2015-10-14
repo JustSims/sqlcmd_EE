@@ -1,7 +1,9 @@
-package sqlcmd_homework.model;
+package ua.com.juja.sqlcmd_homework.sqlcmd.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.com.juja.sqlcmd_homework.model.DataSet;
+import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 
 import java.util.Arrays;
 import static org.junit.Assert.assertEquals;

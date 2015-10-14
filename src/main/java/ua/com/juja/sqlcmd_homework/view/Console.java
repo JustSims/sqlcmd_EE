@@ -1,4 +1,4 @@
-package sqlcmd_homework.view;
+package ua.com.juja.sqlcmd_homework.view;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package sqlcmd_homework.controller.command;
+package ua.com.juja.sqlcmd_homework.controller.command;
 
 /**
  * Created by Sims on 13/10/2015.

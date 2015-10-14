@@ -1,4 +1,4 @@
-package integration;
+package ua.com.juja.sqlcmd_homework.integration;
 
 import java.io.IOException;
 import java.io.InputStream;

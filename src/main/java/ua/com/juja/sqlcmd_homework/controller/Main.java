@@ -1,9 +1,9 @@
-package sqlcmd_homework.controller;
+package ua.com.juja.sqlcmd_homework.controller;
 
-import sqlcmd_homework.model.DatabaseManager;
-import sqlcmd_homework.model.JDBCDatabaseManager;
-import sqlcmd_homework.view.Console;
-import sqlcmd_homework.view.View;
+import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
+import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
+import ua.com.juja.sqlcmd_homework.view.Console;
+import ua.com.juja.sqlcmd_homework.view.View;
 
 /**
  * Created by Sims on 06/10/2015.

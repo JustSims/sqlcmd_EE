@@ -8,8 +8,8 @@
         <module.name>SqlCmd</module.name>
     </properties>
 
-    <groupId>ua.com.juja.JuJaSqlCmd_homework</groupId>
-    <artifactId>JuJaSqlCmd_homework</artifactId>
+    <groupId>ua.com.juja.sqlcmd_homework</groupId>
+    <artifactId>sqlcmd_homework</artifactId>
     <version>1.0.0</version>
 
     <dependencies>

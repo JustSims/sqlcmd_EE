@@ -1,8 +1,8 @@
-package sqlcmd_homework.controller;
+package ua.com.juja.sqlcmd_homework.controller;
 
-import sqlcmd_homework.controller.command.*;
-import sqlcmd_homework.model.DatabaseManager;
-import sqlcmd_homework.view.View;
+import ua.com.juja.sqlcmd_homework.controller.command.*;
+import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
+import ua.com.juja.sqlcmd_homework.view.View;
 
 
 /**

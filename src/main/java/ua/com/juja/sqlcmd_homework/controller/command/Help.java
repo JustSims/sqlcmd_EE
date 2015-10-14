@@ -1,5 +1,5 @@
-package sqlcmd_homework.controller.command;
-import sqlcmd_homework.view.View;
+package ua.com.juja.sqlcmd_homework.controller.command;
+import ua.com.juja.sqlcmd_homework.view.View;
 
 /**
  * Created by Sims on 12/10/2015.
