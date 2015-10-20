@@ -5,5 +5,4 @@ package ua.com.juja.sqlcmd_homework.controller.command;
  */
 public class ExitException extends RuntimeException {
 
-
 }

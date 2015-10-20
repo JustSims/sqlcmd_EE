@@ -23,6 +23,6 @@ public class isConnected implements Command {
 
     @Override
     public void process(String command) {
-        view.write(String.format("You cannot use command '%s', before connecting. To enter database type: connect|databaseName|userName|password ", command));
+        view.write(String.format("You cannot use command '%s', before connecting. To enter database type: connect|databaseName|userName|password", command));
     }
 }
