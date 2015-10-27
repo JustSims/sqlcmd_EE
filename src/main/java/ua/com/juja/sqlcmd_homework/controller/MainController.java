@@ -28,8 +28,6 @@ public class MainController {
     }
 
     public void run(){
-        view.write("Hi, welcome to the database manager.");
-        view.write("Enter 'connect|database|userName|password' to connect to database:");
         try {
             doWork();
         } catch (ExitException e){
@@ -38,14 +36,23 @@ public class MainController {
     }
 
     private void doWork() {
+        view.write("Hi, welcome to the database manager.");
+        view.write("Enter 'connect|database|userName|password' to connect to database:");
+
         while (true) {
             String input = view.read();
-            if (input == null) {
-                new Exit(view).process("");
-            }
+
             for (Command command : commands) {
-                if (command.canProcess(input)) {
-                    command.process(input);
+                try{
+                    if (command.canProcess(input)) {
+                        command.process(input);
+                        break;
+                    }
+                } catch (Exception e){
+                    if (e instanceof ExitException) {
+                            throw e;
+                        }
+                    printError(e);
                     break;
                 }
             }
@@ -53,5 +60,14 @@ public class MainController {
         }
     }
 
+    private void printError(Exception e) {
+        String message = e.getMessage();
+        Throwable cause = e.getCause();
+        if (e.getCause() != null) {
+            message += " " + cause.getMessage();
+        }
+        view.write("Something went wrong: " + message);
+        view.write("Try again:");
+    }
 }
 

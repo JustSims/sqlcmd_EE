@@ -228,7 +228,8 @@ public class IntegrationTest {
     @Test
     public void testErrorConnect() {
         //given
-        in.add("connect|mydb_home|postgres|");
+        in.add("connect|mydb_home|postgres");
+        in.add("exit");
         //when
         Main.main(new String[0]);
 
@@ -295,6 +296,28 @@ public class IntegrationTest {
                 "userName1|*****|13|\r\n" +
                 "userName2|+++++|14|\r\n" +
                 "-----------------\r\n" +
+                "Enter command (or 'help')\r\n" +
+                //exit
+                "Bye\r\n", getData());
+    }
+
+    @Test
+    public void testClearWithError() {
+        //given
+        in.add("connect|mydb_home|postgres|postgres");
+        in.add("clear|asasas|Asasas|ASAs");
+        in.add("exit");
+        //when
+        Main.main(new String[0]);
+
+        //then
+        assertEquals("Hi, welcome to the database manager.\r\n" +
+                "Enter 'connect|database|userName|password' to connect to database:\r\n" +
+                //connect
+                "Success!\r\n" +
+                "Enter command (or 'help')\r\n" +
+                "Something went wrong: Command format 'clear|tableName', and you've entered: clear|asasas|Asasas|ASAs\r\n" +
+                "Try again:\r\n" +
                 "Enter command (or 'help')\r\n" +
                 //exit
                 "Bye\r\n", getData());

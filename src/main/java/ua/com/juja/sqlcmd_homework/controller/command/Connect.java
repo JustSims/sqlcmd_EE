@@ -23,7 +23,6 @@ public class Connect implements Command {
 
     @Override
     public void process(String command) {
-            try {
                 String[] data = command.split("\\|");
 
                 if (data.length != parametersLength()){
@@ -36,22 +35,10 @@ public class Connect implements Command {
 
                 manager.connect(databaseName, userName, password);
                 view.write("Success!");
-            } catch (Exception e) {
-                printError(e);
-            }
     }
 
     private int parametersLength() {
         return COMMAND_EXAMPLE.split("\\|").length;
     }
 
-    private void printError(Exception e) {
-        String message = e.getMessage();
-        Throwable cause = e.getCause();
-        if (e.getCause() != null) {
-            message += " " + cause.getMessage();
-        }
-        view.write("Something went wrong: " + message);
-        view.write("Try again:");
-    }
 }
