@@ -1,14 +1,11 @@
 package ua.com.juja.sqlcmd_homework.integration;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import ua.com.juja.sqlcmd_homework.controller.Main;
-import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import static org.junit.Assert.assertEquals;
