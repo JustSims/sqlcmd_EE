@@ -108,8 +108,7 @@ public class FindTestWithMockito {
         //given
         when(manager.getTableColumns("user")).thenReturn(new String[]{"id", "name", "password"} );
 
-        DataSet[] data = new DataSet[0];
-        when(manager.getTableData("user")).thenReturn(data);
+        when(manager.getTableData("user")).thenReturn(new DataSet[0]);
 
         //when
         command.process("find|user");
