@@ -52,12 +52,22 @@ public class FindTestWithMockito {
         command.process("find|user");
 
         //then
+        String expected =
+                "[-----------------," +
+                " id|name|password|," +
+                " -----------------," +
+                " 12|userName1|*****|," +
+                " 13|userName2|+++++|," +
+                " -----------------]";
+        print(expected);
+    }
+
+    private void print(String expected) {
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(view, atLeastOnce()).write(captor.capture());
-        assertEquals("[-----------------, id|name|password|," +
-                     " -----------------, 12|userName1|*****|," +
-                     " 13|userName2|+++++|, -----------------]", captor.getAllValues().toString());
+        assertEquals(expected, captor.getAllValues().toString());
     }
+
     @Test
     public void testCanProcessFindWithParameters() {
         //given
@@ -105,10 +115,9 @@ public class FindTestWithMockito {
         command.process("find|user");
 
         //then
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(view, atLeastOnce()).write(captor.capture());
-        assertEquals("[-----------------, id|name|password|," +
-                " -----------------," +
-                " -----------------]", captor.getAllValues().toString());
+        print("[-----------------," +
+              " id|name|password|," +
+              " -----------------," +
+              " -----------------]");
     }
 }
