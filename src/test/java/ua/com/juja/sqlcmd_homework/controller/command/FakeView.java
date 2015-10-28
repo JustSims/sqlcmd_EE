@@ -8,6 +8,7 @@ import ua.com.juja.sqlcmd_homework.view.View;
 public class FakeView implements View {
 
     private String consoleMessages = "";
+    private String input;
 
     @Override
     public void write(String consoleMessage) {
@@ -16,7 +17,16 @@ public class FakeView implements View {
 
     @Override
     public String read() {
-        return null;
+        if (this.input == null){
+            throw new IllegalStateException("You should initialise read() method");
+        }
+        String result = this.input;
+        this.input = null;
+        return result;
+    }
+    public void addRead(String input){
+        this.input = input;
+
     }
 
     public String getContent() {

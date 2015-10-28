@@ -27,7 +27,7 @@ public class Connect implements Command {
 
                 if (data.length != parametersLength()){
                     throw new IllegalArgumentException(String.format("Invalid amount of parameters, separated by '|'," +
-                        " expected %s, but you've entered %s: ", parametersLength(), data.length));
+                        " expected %s, but you've entered: %s", parametersLength(), data.length));
                 }
                 String databaseName = data[1];
                 String userName = data[2];

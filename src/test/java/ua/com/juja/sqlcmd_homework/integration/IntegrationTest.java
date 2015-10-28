@@ -238,7 +238,7 @@ public class IntegrationTest {
                 "Enter 'connect|database|userName|password' to connect to database:\r\n" +
                 //connect mydb
                 "Something went wrong: Invalid amount of parameters, separated by '|'," +
-                " expected 4, but you've entered 3: \r\n" +
+                " expected 4, but you've entered: 3\r\n" +
                 "Try again:\r\n" +
                 "Enter command (or 'help')\r\n" +
                 //exit
