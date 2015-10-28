@@ -20,17 +20,19 @@ public class FindTestWithMockito {
 
     private DatabaseManager manager;
     private View view;
+    private Command command;
 
     @Before
     public void setUp(){
         manager = mock(DatabaseManager.class);
         view = mock(View.class);
+        command = new Find(manager, view);
     }
+
 
     @Test
     public void testPrintTableData(){
         //given
-        Command command = new Find(manager, view);
         when(manager.getTableColumns("user")).thenReturn(new String[]{"id", "name", "password"} );
 
         DataSet user1 = new DataSet();
@@ -59,7 +61,6 @@ public class FindTestWithMockito {
     @Test
     public void testCanProcessFindWithParameters() {
         //given
-        Command command = new Find(manager, view);
 
         //when
         boolean canProcess = command.canProcess("find|user");
@@ -83,7 +84,7 @@ public class FindTestWithMockito {
     @Test
     public void testCantProcessFindWithQweParameters() {
         //given
-        Command command = new Find(manager, view);
+
 
         //when
         boolean canProcess = command.canProcess("qwe|user");
@@ -95,7 +96,6 @@ public class FindTestWithMockito {
     @Test
     public void testPrintEmptyTableData(){
         //given
-        Command command = new Find(manager, view);
         when(manager.getTableColumns("user")).thenReturn(new String[]{"id", "name", "password"} );
 
         DataSet[] data = new DataSet[0];
