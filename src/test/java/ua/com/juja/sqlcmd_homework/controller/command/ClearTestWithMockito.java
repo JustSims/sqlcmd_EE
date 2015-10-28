@@ -61,15 +61,35 @@ public class ClearTestWithMockito {
     }
 
     @Test
-    public void testCantProcessClearWithQweParameters() {
+    public void testValidationErrorWhenCountParametersLessThan2() {
         //given
 
 
         //when
-        boolean canProcess = command.canProcess("qwe|user");
+        try {
+            command.process("clear");
+            fail();
+        }catch (IllegalArgumentException e){
+            // then
+            assertEquals("Command format 'clear|tableName', and you've entered: clear", e.getMessage());
+        }
 
-        //then
-        assertFalse(canProcess);
+    }
+
+    @Test
+    public void testValidationErrorWhenCountParametersMoreThan2() {
+        //given
+
+
+        //when
+        try {
+            command.process("clear|table|sdsdsd");
+            fail();
+        }catch (IllegalArgumentException e){
+            // then
+            assertEquals("Command format 'clear|tableName', and you've entered: clear|table|sdsdsd", e.getMessage());
+        }
+
     }
 
 
