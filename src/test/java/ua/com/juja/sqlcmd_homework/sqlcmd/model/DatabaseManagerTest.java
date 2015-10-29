@@ -3,6 +3,7 @@ package ua.com.juja.sqlcmd_homework.sqlcmd.model;
 import org.junit.Before;
 import org.junit.Test;
 import ua.com.juja.sqlcmd_homework.model.DataSet;
+import ua.com.juja.sqlcmd_homework.model.DataSetImplemented;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public abstract class DatabaseManagerTest {
         manager.clear("user");
         //when
         // add new user
-        DataSet input = new DataSet();
+        DataSet input = new DataSetImplemented();
         input.put("name", "John");
         input.put("password", "pass");
         input.put("id", 13);
@@ -47,6 +48,7 @@ public abstract class DatabaseManagerTest {
         //then
         List<DataSet> users = manager.getTableData("user");
         assertEquals(1, users.size());
+
 
         DataSet user = users.get(0);
         assertEquals("[name, password, id]", Arrays.toString(user.getNames()));
@@ -58,7 +60,7 @@ public abstract class DatabaseManagerTest {
         // given
         manager.clear("user");
 
-        DataSet input = new DataSet();
+        DataSet input = new DataSetImplemented();
 
         input.put("name", "Stiven");
         input.put("password", "pass");
@@ -67,7 +69,7 @@ public abstract class DatabaseManagerTest {
         manager.create("user", input);
 
         // when
-        DataSet newValue = new DataSet();
+        DataSet newValue = new DataSetImplemented();
         newValue.put("password", "pass2");
         newValue.put("name", "Pup");
         manager.update("user", 13, newValue);
