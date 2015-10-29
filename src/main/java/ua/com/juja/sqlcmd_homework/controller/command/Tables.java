@@ -10,19 +10,19 @@ import java.util.Set;
 /**
  * Created by Sims on 12/10/2015.
  */
-public class List implements Command{
+public class Tables implements Command{
 
     private View view;
     private DatabaseManager manager;
 
-    public List(DatabaseManager manager, View view) {
+    public Tables(DatabaseManager manager, View view) {
         this.manager = manager;
         this.view = view;
     }
 
     @Override
     public boolean canProcess(String command) {
-        return command.equals("list");
+        return command.equals("list");//TODO replace command "list" => "tables"
     }
 
     @Override

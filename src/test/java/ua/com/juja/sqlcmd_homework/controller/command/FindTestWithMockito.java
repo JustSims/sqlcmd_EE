@@ -11,6 +11,7 @@ import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
@@ -47,9 +48,7 @@ public class FindTestWithMockito {
         user2.put("id", 13);
         user2.put("name", "userName2");
         user2.put("password", "+++++");
-
-        DataSet[] data = new DataSet[]{user1, user2};
-        when(manager.getTableData("user")).thenReturn(data);
+        when(manager.getTableData("user")).thenReturn(Arrays.asList(user1, user2));
 
         //when
         command.process("find|user");
@@ -116,7 +115,7 @@ public class FindTestWithMockito {
         //given
         setUpTableColumns("user", "id", "name", "password");
 
-        when(manager.getTableData("user")).thenReturn(new DataSet[0]);
+        when(manager.getTableData("user")).thenReturn(new ArrayList<DataSet>());
 
         //when
         command.process("find|user");
@@ -139,8 +138,7 @@ public class FindTestWithMockito {
         DataSet user2 = new DataSet();
         user2.put("id", 13);
 
-        DataSet[] data = new DataSet[]{user1, user2};
-        when(manager.getTableData("test")).thenReturn(data);
+        when(manager.getTableData("test")).thenReturn(Arrays.asList(user1, user2));
 
         //when
         command.process("find|test");

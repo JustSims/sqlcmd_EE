@@ -1,10 +1,7 @@
 package ua.com.juja.sqlcmd_homework.model;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Sims on 02.09.2015.
@@ -13,28 +10,26 @@ public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connection;
 
     @Override
-    public DataSet[] getTableData(String tableName){
-        try {
-            int size = getSize(tableName);
+    public List<DataSet> getTableData(String tableName){
+//        int size = getSize(tableName);
+//        List<DataSet> result = new ArrayList<DataSet>();
 
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
+        List<DataSet> result = new LinkedList<DataSet>();
+        try (Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName))
+        {
             ResultSetMetaData rsmd = rs.getMetaData();
-            DataSet[] result = new DataSet[size];
-            int index = 0;
             while (rs.next()) {
                 DataSet dataSet = new DataSet();
-                result[index++] = dataSet;
-                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    dataSet.put(rsmd.getColumnName(i), rs.getObject(i));
+                result.add(dataSet);
+                for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                    dataSet.put(rsmd.getColumnName(i + 1), rs.getObject(i + 1));
                 }
             }
-            rs.close();
-            stmt.close();
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new DataSet[0];
+            return result;
         }
     }
 

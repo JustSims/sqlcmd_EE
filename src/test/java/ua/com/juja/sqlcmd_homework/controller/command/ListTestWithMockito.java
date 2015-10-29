@@ -2,9 +2,6 @@ package ua.com.juja.sqlcmd_homework.controller.command;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
 
@@ -26,7 +23,7 @@ public class ListTestWithMockito {
     public void setUp(){
         manager = mock(DatabaseManager.class);
         view = mock(View.class);
-        command = new List(manager, view);
+        command = new Tables(manager, view);
     }
 
 

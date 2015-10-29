@@ -21,7 +21,7 @@ public class MainController {
                 new Exit(view),
                 new isConnected(manager, view),
                 new Create(manager, view),
-                new List(manager, view),
+                new Tables(manager, view),
                 new Clear(manager, view),
                 new Find(manager, view),
                 new Unsupported(view)};
