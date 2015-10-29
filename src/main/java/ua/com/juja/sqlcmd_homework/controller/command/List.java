@@ -5,6 +5,7 @@ import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
 
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Created by Sims on 12/10/2015.
@@ -26,8 +27,8 @@ public class List implements Command{
 
     @Override
     public void process(String command) {
-        String[] tableNames = manager.getTableNames();
-        String message = Arrays.toString(tableNames);
+        Set<String> tableNames = manager.getTableNames();
+        String message = tableNames.toString();
         view.write(message);
     }
 }

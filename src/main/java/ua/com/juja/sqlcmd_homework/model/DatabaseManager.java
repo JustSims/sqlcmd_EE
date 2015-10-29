@@ -1,12 +1,14 @@
 package ua.com.juja.sqlcmd_homework.model;
 
+import java.util.Set;
+
 /**
  * Created by Sims on 12/09/2015.
  */
 public interface DatabaseManager {
     DataSet[] getTableData(String tableName);
 
-    String[] getTableNames();
+    Set<String> getTableNames();
 
     void connect(String database, String userName, String password);
 
