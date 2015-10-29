@@ -11,8 +11,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
     @Override
     public List<DataSet> getTableData(String tableName){
-//        int size = getSize(tableName);
-//        List<DataSet> result = new ArrayList<DataSet>();
 
         List<DataSet> result = new LinkedList<DataSet>();
         try (Statement stmt = connection.createStatement();
@@ -32,8 +30,8 @@ public class JDBCDatabaseManager implements DatabaseManager {
             return result;
         }
     }
-
-    private int getSize(String tableName) throws SQLException {
+    @Override
+    public int getSize(String tableName) throws SQLException {
         Statement stmt = connection.createStatement();
         ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM public." + tableName);
         rsCount.next();

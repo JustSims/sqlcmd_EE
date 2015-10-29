@@ -3,8 +3,6 @@ package ua.com.juja.sqlcmd_homework.controller.command;
 
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
-
-import java.util.Arrays;
 import java.util.Set;
 
 /**

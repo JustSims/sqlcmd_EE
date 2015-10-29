@@ -4,9 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.view.View;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

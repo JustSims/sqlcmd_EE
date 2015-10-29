@@ -245,20 +245,6 @@ public class IntegrationTest {
     @Test
     public void testFindWithDataAfterConnect() {
         //given
-/*        databaseManager.connect("mydb_home", "postgres", "postgres");
-
-        databaseManager.clear("user");
-        DataSet user1 = new DataSet();
-        user1.put("id", 13);
-        user1.put("name", "UserName1");
-        user1.put("password", "*****");
-        databaseManager.create("user", user1);
-
-        DataSet user2 = new DataSet();
-        user2.put("id", 14);
-        user2.put("name", "UserName2");
-        user2.put("password", "+++++");
-        databaseManager.create("user", user2);*/
 
         in.add("connect|mydb_home|postgres|postgres");
         in.add("clear|user");

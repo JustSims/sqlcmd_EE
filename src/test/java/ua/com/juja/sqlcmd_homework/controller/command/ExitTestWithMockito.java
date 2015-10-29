@@ -1,7 +1,6 @@
 package ua.com.juja.sqlcmd_homework.controller.command;
 
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import ua.com.juja.sqlcmd_homework.view.View;
 
