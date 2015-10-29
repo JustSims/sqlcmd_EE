@@ -42,7 +42,7 @@ public class IntegrationTest {
                 "\t 'connect|databaseName|userName|password - to connect to your database\r\n" +
                 "\t 'list' - to show all existing table names\r\n" +
                 "\t 'clear|tableName' -  to clear whole table\r\n" +
-                "\t 'create|tableName|column1|value1|column2|value2|...|columnN|ValueN' -  to createrecord in table\r\n" +
+                "\t 'create|tableName|column1|value1|column2|value2|...|columnN|ValueN' -  to create record in table\r\n" +
                 "\t 'find|tableName' - to show table 'tableName' content\r\n" +
                 "\t 'help' - to show help for this project\r\n" +
                 "\t 'exit' - to exit the program\r\n" +

@@ -22,7 +22,7 @@ public class Help implements Command{
             view.write("\t 'connect|databaseName|userName|password - to connect to your database");
             view.write("\t 'list' - to show all existing table names");
             view.write("\t 'clear|tableName' -  to clear whole table");//TODO if user typed command, maybe we should to ask him again?
-            view.write("\t 'create|tableName|column1|value1|column2|value2|...|columnN|ValueN' -  to createrecord in table");
+            view.write("\t 'create|tableName|column1|value1|column2|value2|...|columnN|ValueN' -  to create record in table");
             view.write("\t 'find|tableName' - to show table 'tableName' content");
             view.write("\t 'help' - to show help for this project");
             view.write("\t 'exit' - to exit the program");
