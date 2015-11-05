@@ -23,6 +23,8 @@ public abstract class DatabaseManagerTest {
     public void setup(){
         manager = getDatabaseManager();
         manager.connect("mydb_home","postgres", "postgres");
+        /*manager.getTableData("user");
+        manager.getTableData("test");*/
     }
 
     @Test
