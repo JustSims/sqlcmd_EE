@@ -13,7 +13,7 @@
         'find|tableName' - to show table 'tableName' content<br>
         'help' - to show help for this project<br>
         'exit' - to exit the program<br>
-        You can go back to <a href="menu">Menu</a><br>
+        You can go back to <a href="menu">menu</a><br>
     </body>
 </html>
 
