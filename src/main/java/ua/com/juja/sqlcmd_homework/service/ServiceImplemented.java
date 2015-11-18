@@ -4,6 +4,7 @@ import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -13,7 +14,7 @@ public class ServiceImplemented implements Service {
 
     @Override
     public List<String> commandsList() {
-        return Arrays.asList("help", "menu", "connect", "find");
+        return Arrays.asList("help", "menu", "connect", "find", "list");
     }
 
     @Override
@@ -39,5 +40,10 @@ public class ServiceImplemented implements Service {
             }
         }
         return result;
+    }
+
+    @Override
+    public Set<String> list(DatabaseManager manager) throws SQLException {
+        return manager.getTableNames();
     }
 }

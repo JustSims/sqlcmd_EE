@@ -5,6 +5,7 @@ import ua.com.juja.sqlcmd_homework.service.Service;
 import ua.com.juja.sqlcmd_homework.service.ServiceImplemented;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,12 +52,28 @@ public class MainServlet extends HttpServlet {
             req.getRequestDispatcher("menu.jsp").forward(req, resp);
         } else if (action.startsWith("/help")) {
             req.getRequestDispatcher("help.jsp").forward(req, resp);
+        } else if (action.startsWith("/list")) {
+            list(manager, req, resp);
         } else if (action.startsWith("/find")) {
             String tableName = req.getParameter("table");
             req.setAttribute("table", service.find(manager, tableName));
             req.getRequestDispatcher("find.jsp").forward(req, resp);
         } else {
             req.getRequestDispatcher("error.jsp").forward(req, resp);
+        }
+    }
+
+    private void list(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
+        Set<String> tableNames = manager.getTableNames();
+        req.setAttribute("tables", tableNames);
+        try {
+            req.getRequestDispatcher("list.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            try {
+                req.getRequestDispatcher("error.jsp").forward(req, resp);
+            } catch (ServletException | IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
