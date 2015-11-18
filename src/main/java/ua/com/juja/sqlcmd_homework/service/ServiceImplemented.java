@@ -14,7 +14,7 @@ public class ServiceImplemented implements Service {
 
     @Override
     public List<String> commandsList() {
-        return Arrays.asList("help", "menu", "connect", "find", "list");
+        return Arrays.asList("help", "menu", "connect", "find", "list", "clear");
     }
 
     @Override
@@ -45,5 +45,10 @@ public class ServiceImplemented implements Service {
     @Override
     public Set<String> list(DatabaseManager manager) throws SQLException {
         return manager.getTableNames();
+    }
+
+    @Override
+    public void clear(DatabaseManager manager, String tableName) {
+        manager.clear(tableName);
     }
 }

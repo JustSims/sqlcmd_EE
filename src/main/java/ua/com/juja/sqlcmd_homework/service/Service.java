@@ -19,4 +19,6 @@ public interface Service {
     List<List<String>> find(DatabaseManager manager, String tableName);
 
     Set<String> list(DatabaseManager manager) throws SQLException;
+
+    void clear(DatabaseManager manager, String tableName);
 }
