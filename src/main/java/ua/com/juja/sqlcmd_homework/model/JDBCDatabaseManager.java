@@ -10,25 +10,30 @@ public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connection;
 
     @Override
-    public List<DataSet> getTableData(String tableName){
+    public List<String> getTableData(String tableName) throws SQLException {
 
-        List<DataSet> result = new LinkedList<DataSet>();
-        try (Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName))
-        {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            while (rs.next()) {
-                DataSet dataSet = new DataSetImplemented();
-                result.add(dataSet);
-                for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                    dataSet.put(rsmd.getColumnName(i + 1), rs.getObject(i + 1));
+        Statement stmt = connection.createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM public. " + tableName);
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+
+        List<String> tableData = new ArrayList<>();
+        tableData.add(String.valueOf(rsmd.getColumnCount()));
+        for (int indexColumn = 1; indexColumn <= rsmd.getColumnCount(); indexColumn++) {
+            tableData.add(resultSet.getMetaData().getColumnName(indexColumn));
+        }
+
+        while (resultSet.next()) {
+            for (int indexData = 1; indexData <= rsmd.getColumnCount(); indexData++) {
+                if (resultSet.getString(indexData) == null) {
+                    tableData.add("");
+                } else {
+                    tableData.add(resultSet.getString(indexData));
                 }
             }
-            return result;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return result;
         }
+        stmt.close();
+        resultSet.close();
+        return tableData;
     }
     @Override
     public int getSize(String tableName) throws SQLException {
@@ -58,6 +63,23 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
+    public void table(String tableName, String primaryKey, Map<String, Object> columnParameters) throws SQLException {
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate("CREATE TABLE " + tableName +
+                "(" + primaryKey + " INT  PRIMARY KEY NOT NULL" +
+                getParameters(columnParameters) + ")");
+        stmt.close();
+    }
+
+    private String getParameters(Map<String, Object> columnParameters) {
+        String result = "";
+        for (Map.Entry<String, Object> pair : columnParameters.entrySet()) {
+            result += ", " + pair.getKey() + " " + pair.getValue();
+        }
+        return result;
+    }
+
+    @Override
     public void connect(String database, String userName, String password) {
         try {
             Class.forName("org.postgresql.Driver");
@@ -76,40 +98,50 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void clear(String tableName) {
-        try{
+    public void clear(String tableName) throws SQLException {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DELETE FROM public." + tableName);
             stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
-    public void create(String tableName, DataSet input) {
+    public void create(String tableName, Map<String, Object> inputData) {
         try {
             Statement stmt = connection.createStatement();
 
-            String tableNames = getNameFormated(input, "%s,");
-            String values = getValuesFormated(input, "'%s',");
-
-            stmt.executeUpdate("INSERT INTO public."+ tableName + " (" + tableNames + ")" +
-                    "VALUES (" + values + ")");
+            stmt.executeUpdate("INSERT INTO public."+ tableName + " (" + getColumnNames(inputData) + ")" +
+                    "VALUES (" + getColumnValues(inputData) + ")");
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private String getValuesFormated(DataSet input, String format) {
-        String values = "";
-        for(Object value: input.getValues()){
-            values += String.format(format, value);
+    private String getColumnNames(Map<String, Object> inputData) {
+        String keys = "";
+        for (Map.Entry<String, Object> pair : inputData.entrySet()) {
+            keys += pair.getKey() + ", ";
         }
-        values = values.substring(0, values.length() - 1);
-        return values;
+        return keys.substring(0, keys.length() - 2);
     }
+
+    private String getColumnValues(Map<String, Object> inputData) {
+        String values = "";
+        for (Map.Entry<String, Object> pair : inputData.entrySet()) {
+            values += "'" + pair.getValue() + "', ";
+        }
+        return values.substring(0, values.length() - 2);
+    }
+
+//    private String getValuesFormated(DataSet input, String format) {
+//        String values = "";
+//        for(Object value: input.getValues()){
+//            values += String.format(format, value);
+//        }
+//        values = values.substring(0, values.length() - 1);
+//        return values;
+//    }
 
     @Override
     public void update(String tableName, int id, DataSet newValue) {

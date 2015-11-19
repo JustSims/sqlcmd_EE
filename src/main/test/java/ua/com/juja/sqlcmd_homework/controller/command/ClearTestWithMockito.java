@@ -17,23 +17,23 @@ public class ClearTestWithMockito {
     private View view;
     private Command command;
 
-    @Before
-    public void setUp(){
-        manager = mock(DatabaseManager.class);
-        view = mock(View.class);
-        command = new Clear(manager, view);
-    }
+//    @Before
+//    public void setUp(){
+//        manager = mock(DatabaseManager.class);
+//        view = mock(View.class);
+//        command = new Clear(manager, view);
+//    }
 
 
-    @Test
-    public void testClearTable(){
-        //given
-
-        command.process("clear|user");
-        //when
-        verify(manager).clear("user");
-        verify(view).write("Table user was successfully cleared");
-    }
+//    @Test
+//    public void testClearTable(){
+//        //given
+//
+//        command.process("clear|user");
+//        //when
+//        verify(manager).clear("user");
+//        verify(view).write("Table user was successfully cleared");
+//    }
 
     @Test
     public void testClearWithParameters() {
@@ -46,17 +46,17 @@ public class ClearTestWithMockito {
         assertTrue(canProcess);
     }
 
-    @Test
-     public void testCantProcessClearWithoutParameters() {
-        //given
-        Command command = new Find(manager, view);
-
-        //when
-        boolean canProcess = command.canProcess("clear");
-
-        //then
-        assertFalse(canProcess);
-    }
+//    @Test
+//     public void testCantProcessClearWithoutParameters() {
+//        //given
+//        Command command = new Find(manager, view);
+//
+//        //when
+//        boolean canProcess = command.canProcess("clear");
+//
+//        //then
+//        assertFalse(canProcess);
+//    }
 
     @Test
     public void testValidationErrorWhenCountParametersLessThan2() {

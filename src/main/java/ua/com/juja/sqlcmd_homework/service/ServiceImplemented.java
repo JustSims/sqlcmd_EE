@@ -14,7 +14,7 @@ public class ServiceImplemented implements Service {
 
     @Override
     public List<String> commandsList() {
-        return Arrays.asList("help", "menu", "connect", "find", "list", "clear");
+        return Arrays.asList("help", "menu", "connect", "find", "list", "clear", "create");
     }
 
     @Override
@@ -25,21 +25,8 @@ public class ServiceImplemented implements Service {
     }
 
     @Override
-    public List<List<String>> find(DatabaseManager manager, String tableName) {
-        List<List<String>> result = new LinkedList<>();
-
-        List<String> columns = new LinkedList<>(manager.getTableColumns(tableName));
-        List<DataSet> tableData = manager.getTableData(tableName);
-
-        result.add(columns);
-        for (DataSet dataSet: tableData) {
-            List<String> row = new ArrayList<>(columns.size());
-            result.add(row);
-            for (String column: columns){
-                row.add(dataSet.get(column).toString());
-            }
-        }
-        return result;
+    public List<String> find(DatabaseManager manager, String tableName) throws SQLException {
+        return manager.getTableData(tableName);
     }
 
     @Override
@@ -48,7 +35,19 @@ public class ServiceImplemented implements Service {
     }
 
     @Override
-    public void clear(DatabaseManager manager, String tableName) {
+    public void clear(DatabaseManager manager, String tableName) throws SQLException {
         manager.clear(tableName);
+    }
+
+    @Override
+    public void create(DatabaseManager manager, String tableName, Map<String, Object> inputData)
+            {
+        manager.create(tableName, inputData);
+    }
+
+    @Override
+    public void table(DatabaseManager manager, String tableName, String keyName,
+                      Map<String, Object> columnParameter) throws SQLException {
+        manager.table(tableName, keyName, columnParameter);
     }
 }

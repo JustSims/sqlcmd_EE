@@ -35,17 +35,17 @@ public class ConnectTestWithMockito {
         verify(view).write("Success!");
     }
 
-    @Test
-     public void testCantProcessConnectWithoutParameters() {
-        //given
-        Command command = new Find(manager, view);
-
-        //when
-        boolean canProcess = command.canProcess("connect");
-
-        //then
-        assertFalse(canProcess);
-    }
+//    @Test
+//     public void testCantProcessConnectWithoutParameters() {
+//        //given
+//        Command command = new Find(manager, view);
+//
+//        //when
+//        boolean canProcess = command.canProcess("connect");
+//
+//        //then
+//        assertFalse(canProcess);
+//    }
 
     @Test
     public void testConnectErrorWhenCountParametersLessThan4() {

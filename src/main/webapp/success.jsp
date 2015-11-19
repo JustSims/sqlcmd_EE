@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body>
-Success!
+Success! <br>
 <tr><td><b>To menu <a href="menu">menu</a></b></td></tr>
 </body>
 </html>

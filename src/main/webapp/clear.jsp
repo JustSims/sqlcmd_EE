@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>sqlcmd</title>
+    <title>SQLCmd</title>
 </head>
 <body>
 <form action="clear" method="post">
@@ -17,6 +17,7 @@
             <td><input type="submit" value="clear"/></td>
         </tr>
     </table>
+    Back to <a href="menu">menu</a><br>
 </form>
 </body>
 </html>

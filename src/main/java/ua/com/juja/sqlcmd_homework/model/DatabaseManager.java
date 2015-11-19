@@ -2,13 +2,14 @@ package ua.com.juja.sqlcmd_homework.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Created by Sims on 12/09/2015.
  */
 public interface DatabaseManager {
-    List<DataSet> getTableData(String tableName);
+    List<String> getTableData(String tableName) throws SQLException;
 
     int getSize(String tableName) throws SQLException;
 
@@ -16,13 +17,16 @@ public interface DatabaseManager {
 
     void connect(String database, String userName, String password);
 
-    void clear(String tableName);
+    void clear(String tableName) throws SQLException;
 
-    void create(String tableName, DataSet input);
+    void create(String tableName, Map<String, Object> inputData);
 
     void update(String tableName, int id, DataSet newValue);
 
     Set<String> getTableColumns(String tableName);
 
     boolean isConnected();
+
+    void table(String tableName, String keyName, Map<String, Object> columnParameters) throws SQLException;
+
 }
