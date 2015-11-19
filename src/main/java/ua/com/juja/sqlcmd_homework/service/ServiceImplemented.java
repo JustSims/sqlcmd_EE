@@ -14,7 +14,7 @@ public class ServiceImplemented implements Service {
 
     @Override
     public List<String> commandsList() {
-        return Arrays.asList("help", "menu", "connect", "find", "list", "clear", "create");
+        return Arrays.asList("connect", "help", "menu", "list", "find", "clear", "create", "deleteRecord");
     }
 
     @Override
@@ -49,5 +49,10 @@ public class ServiceImplemented implements Service {
     public void table(DatabaseManager manager, String tableName, String keyName,
                       Map<String, Object> columnParameter) throws SQLException {
         manager.table(tableName, keyName, columnParameter);
+    }
+
+    @Override
+    public void deleteRecord(DatabaseManager manager, String tableName, String keyName, String keyValue) throws SQLException {
+        manager.deleteRecord(tableName, keyName, keyValue);
     }
 }

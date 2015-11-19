@@ -29,4 +29,6 @@ public interface DatabaseManager {
 
     void table(String tableName, String keyName, Map<String, Object> columnParameters) throws SQLException;
 
+    void deleteRecord(String tableName, String keyName, String keyValue) throws SQLException;
+
 }

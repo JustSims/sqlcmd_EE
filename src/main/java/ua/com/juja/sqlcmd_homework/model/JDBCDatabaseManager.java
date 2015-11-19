@@ -71,6 +71,13 @@ public class JDBCDatabaseManager implements DatabaseManager {
         stmt.close();
     }
 
+    @Override
+    public void deleteRecord(String tableName, String keyName, String keyValue) throws SQLException {
+                Statement stmt = connection.createStatement();
+                stmt.executeUpdate("DELETE FROM public. " + tableName + " WHERE " + keyName + " = '" + keyValue + "'");
+                stmt.close();
+    }
+
     private String getParameters(Map<String, Object> columnParameters) {
         String result = "";
         for (Map.Entry<String, Object> pair : columnParameters.entrySet()) {

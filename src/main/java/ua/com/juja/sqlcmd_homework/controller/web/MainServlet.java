@@ -56,11 +56,12 @@ public class MainServlet extends HttpServlet {
         } else if (action.startsWith("/create")) {
             req.setAttribute("actionURL", "addRecord");
             req.getRequestDispatcher("tableName.jsp").forward(req, resp);
-
         } else if (action.equals("/table")) {
             req.getRequestDispatcher("createTable.jsp").forward(req, resp);
         } else if (action.startsWith("/find")) {
             req.getRequestDispatcher("tableName.jsp").forward(req, resp);
+        } else if (action.startsWith("/delete")) {
+            req.getRequestDispatcher("delete.jsp").forward(req, resp);
         } else {
             req.getRequestDispatcher("error.jsp").forward(req, resp);
         }
@@ -100,8 +101,23 @@ public class MainServlet extends HttpServlet {
             find(manager, req, resp);
         } else if (action.equals("/create")) {
             create(manager, req, resp);
+        } else if (action.equals("/delete")) {
+        delete(manager, req, resp);
         }
     }
+
+    private void delete(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
+        String tableName = req.getParameter("tableName");
+        String keyName = req.getParameter("keyName");
+        String keyValue = req.getParameter("keyValue");
+        try {
+            service.deleteRecord(manager, tableName, keyName, keyValue);
+            req.getRequestDispatcher("success.jsp").forward(req, resp);
+        } catch (ServletException | SQLException | IOException e) {
+            error(req, resp, e);
+        }
+    }
+
 
     private void create(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
         String tableName = req.getParameter("tableName");
