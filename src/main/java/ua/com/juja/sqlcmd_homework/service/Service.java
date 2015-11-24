@@ -1,6 +1,4 @@
 package ua.com.juja.sqlcmd_homework.service;
-
-import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 
 import java.sql.SQLException;

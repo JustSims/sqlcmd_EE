@@ -2,9 +2,7 @@ package ua.com.juja.sqlcmd_homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
-import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
 
 import java.sql.SQLException;
 import java.util.*;
