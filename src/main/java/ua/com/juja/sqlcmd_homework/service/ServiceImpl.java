@@ -1,5 +1,6 @@
 package ua.com.juja.sqlcmd_homework.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
@@ -14,6 +15,9 @@ import java.util.*;
 @Component
 public class ServiceImpl implements Service {
 
+    @Autowired
+    private DatabaseManagerFactory factory;
+
     @Override
     public List<String> commandsList() {
         return Arrays.asList("connect", "help", "menu", "list", "find", "clear", "create", "deleteRecord");
@@ -21,7 +25,7 @@ public class ServiceImpl implements Service {
 
     @Override
     public DatabaseManager connect(String databaseName, String userName, String password) {
-        DatabaseManager manager = new JDBCDatabaseManager();
+        DatabaseManager manager = factory.createDatabaseManager();
         manager.connect(databaseName, userName, password);
         return manager;
     }

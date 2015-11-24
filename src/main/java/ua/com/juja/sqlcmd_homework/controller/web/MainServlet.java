@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
-import ua.com.juja.sqlcmd_homework.service.ServiceFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;

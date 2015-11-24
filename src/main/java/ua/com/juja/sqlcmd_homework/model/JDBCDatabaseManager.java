@@ -1,11 +1,14 @@
 package ua.com.juja.sqlcmd_homework.model;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.*;
 
 /**
  * Created by Sims on 02.09.2015.
  */
+@Component
 public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connection;
 
