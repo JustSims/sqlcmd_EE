@@ -1,5 +1,6 @@
 package ua.com.juja.sqlcmd_homework.service;
 
+import org.springframework.stereotype.Component;
 import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
@@ -10,7 +11,8 @@ import java.util.*;
 /**
  * Created by Sims on 05/11/2015.
  */
-public class ServiceImplemented implements Service {
+@Component
+public class ServiceImpl implements Service {
 
     @Override
     public List<String> commandsList() {

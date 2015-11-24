@@ -1,13 +1,16 @@
 package ua.com.juja.sqlcmd_homework.controller.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
-import ua.com.juja.sqlcmd_homework.service.ServiceImplemented;
+import ua.com.juja.sqlcmd_homework.service.ServiceFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +21,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MainServlet extends HttpServlet {
 
+    @Autowired
     private Service service;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        service = new ServiceImplemented();
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
     }
 
     @Override
