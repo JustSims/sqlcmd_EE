@@ -13,7 +13,38 @@ public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connection;
 
     @Override
-    public List<String> getTableData(String tableName) throws SQLException {
+    public void connect(String database, String userName, String password) throws SQLException{
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Please add jdbc jar to project", e);
+        }
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/" + database, userName,
+                    password);
+        } catch (SQLException e) {
+            connection =  null;
+            throw new RuntimeException(String.format("Couldnt get connection" +
+                    " for model: %s user %s", database, userName), e);
+        }
+    }
+    @Override
+    public boolean isConnected() {
+        return connection!= null;
+    }
+
+    //    private String getValuesFormated(DataSet input, String format) {
+//        String values = "";
+//        for(Object value: input.getValues()){
+//            values += String.format(format, value);
+//        }
+//        values = values.substring(0, values.length() - 1);
+//        return values;
+
+
+    @Override
+    public List<String> find(String tableName) throws SQLException {
 
         Statement stmt = connection.createStatement();
         ResultSet resultSet = stmt.executeQuery("SELECT * FROM public. " + tableName);
@@ -38,6 +69,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         resultSet.close();
         return tableData;
     }
+
     @Override
     public int getSize(String tableName) throws SQLException {
         Statement stmt = connection.createStatement();
@@ -90,24 +122,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void connect(String database, String userName, String password) {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Please add jdbc jar to project", e);
-        }
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/" + database, userName,
-                    password);
-        } catch (SQLException e) {
-            connection =  null;
-            throw new RuntimeException(String.format("Couldnt get connection" +
-                    " for model: %s user %s", database, userName), e);
-        }
-    }
-
-    @Override
     public void clear(String tableName) throws SQLException {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DELETE FROM public." + tableName);
@@ -143,15 +157,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
         }
         return values.substring(0, values.length() - 2);
     }
-
-//    private String getValuesFormated(DataSet input, String format) {
-//        String values = "";
-//        for(Object value: input.getValues()){
-//            values += String.format(format, value);
-//        }
-//        values = values.substring(0, values.length() - 1);
-//        return values;
-//    }
 
     @Override
     public void update(String tableName, int id, DataSet newValue) {
@@ -192,11 +197,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
             e.printStackTrace();
             return tables;
         }
-    }
-
-    @Override
-    public boolean isConnected() {
-        return connection!= null;
     }
 
     private String getNameFormated(DataSet newValue, String format) {

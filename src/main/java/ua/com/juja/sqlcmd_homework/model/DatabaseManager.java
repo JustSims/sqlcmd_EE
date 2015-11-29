@@ -9,17 +9,17 @@ import java.util.Set;
  * Created by Sims on 12/09/2015.
  */
 public interface DatabaseManager {
-    List<String> getTableData(String tableName) throws SQLException;
+    List<String> find(String tableName) throws SQLException;
 
     int getSize(String tableName) throws SQLException;
 
-    Set<String> getTableNames();
+    Set<String> getTableNames() throws SQLException;
 
-    void connect(String database, String userName, String password);
+    void connect(String database, String userName, String password) throws SQLException;
 
     void clear(String tableName) throws SQLException;
 
-    void create(String tableName, Map<String, Object> inputData);
+    void create(String tableName, Map<String, Object> inputData) throws SQLException;
 
     void update(String tableName, int id, DataSet newValue);
 

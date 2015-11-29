@@ -5,6 +5,8 @@ import org.junit.Test;
 import ua.com.juja.sqlcmd_homework.model.DataSet;
 import ua.com.juja.sqlcmd_homework.model.DataSetImplemented;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -20,13 +22,13 @@ public abstract class DatabaseManagerTest {
     public abstract DatabaseManager getDatabaseManager();
 
     @Before
-    public void setup(){
+    public void setup() throws SQLException {
         manager = getDatabaseManager();
         manager.connect("mydb_home","postgres", "postgres");
     }
 
     @Test
-    public void testGetAllTableNames(){
+    public void testGetAllTableNames() throws SQLException {
         Set<String> tableNames = manager.getTableNames();
         assertEquals("[user, test]", tableNames.toString());
     }

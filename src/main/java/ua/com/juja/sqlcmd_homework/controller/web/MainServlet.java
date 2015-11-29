@@ -3,8 +3,7 @@ package ua.com.juja.sqlcmd_homework.controller.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
-import ua.com.juja.sqlcmd_homework.service.Service;
-import ua.com.juja.sqlcmd_homework.service.ServiceException;
+import ua.com.juja.sqlcmd_homework.service.ConnectionService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MainServlet extends HttpServlet {
 
     @Autowired
-    private Service service;
+    private ConnectionService service;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -121,7 +120,7 @@ public class MainServlet extends HttpServlet {
         String keyName = req.getParameter("keyName");
         String keyValue = req.getParameter("keyValue");
         try {
-            service.deleteRecord(manager, tableName, keyName, keyValue);
+            manager.deleteRecord(tableName, keyName, keyValue);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
         } catch (Exception e) {
             error(req, resp, e);
@@ -137,7 +136,7 @@ public class MainServlet extends HttpServlet {
                 inputData.put(req.getParameter("columnName" + index),
                         req.getParameter("columnValue" + index));
             }
-            service.create(manager, tableName, inputData);
+            manager.create(tableName, inputData);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
         } catch (Exception e) {
             error(req, resp, e);
@@ -147,7 +146,7 @@ public class MainServlet extends HttpServlet {
     private void find(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
         String tableName = req.getParameter("tableName");
         try {
-            List<String> tableData = service.find(manager, tableName);
+            List<String> tableData = manager.find(tableName);
             List<List<String>> table = new ArrayList<>(tableData.size() - 1);
             int columnCount = Integer.parseInt(tableData.get(0));
             for (int current = 1; current < tableData.size();) {
@@ -175,7 +174,7 @@ public class MainServlet extends HttpServlet {
                     req.getParameter("columnType" + index));
         }
         try {
-            service.table(manager, tableName, primaryKey, columnParameters);
+            manager.table(tableName, primaryKey, columnParameters);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
         } catch (Exception e) {
             error(req, resp, e);
@@ -194,13 +193,13 @@ public class MainServlet extends HttpServlet {
     }
 
     private int getColumnCount(DatabaseManager manager, String tableName) throws SQLException {
-        return Integer.parseInt(manager.getTableData(tableName).get(0));
+        return Integer.parseInt(manager.find(tableName).get(0));
     }
 
     private void clear(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
         String tableName = req.getParameter("tableName");
         try {
-            service.clear(manager, tableName);
+            manager.clear(tableName);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
         } catch (Exception e) {
             error(req, resp, e);
@@ -208,9 +207,9 @@ public class MainServlet extends HttpServlet {
     }
 
     private void list(DatabaseManager manager, HttpServletRequest req, HttpServletResponse resp) {
-        Set<String> tableNames = manager.getTableNames();
-        req.setAttribute("tables", tableNames);
         try {
+            Set<String> tableNames = manager.getTableNames();
+            req.setAttribute("tables", tableNames);
             req.getRequestDispatcher("list.jsp").forward(req, resp);
         } catch (Exception e) {
             error(req, resp, e);
