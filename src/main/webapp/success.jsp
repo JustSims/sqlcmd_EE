@@ -6,6 +6,6 @@
 </head>
 <body>
 Success! <br>
-<tr><td><b>To menu <a href="menu">menu</a></b></td></tr>
+<tr><td>To menu <a href="menu">menu</a></td></tr>
 </body>
 </html>

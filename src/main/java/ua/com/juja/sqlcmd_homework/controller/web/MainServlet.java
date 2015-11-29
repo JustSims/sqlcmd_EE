@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
+import ua.com.juja.sqlcmd_homework.service.ServiceException;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -60,12 +60,14 @@ public class MainServlet extends HttpServlet {
         } else if (action.startsWith("/create")) {
             req.setAttribute("actionURL", "addRecord");
             req.getRequestDispatcher("tableName.jsp").forward(req, resp);
-        } else if (action.equals("/table")) {
+        } else if (action.startsWith("/table")) {
             req.getRequestDispatcher("createTable.jsp").forward(req, resp);
         } else if (action.startsWith("/find")) {
             req.getRequestDispatcher("tableName.jsp").forward(req, resp);
         } else if (action.startsWith("/delete")) {
             req.getRequestDispatcher("delete.jsp").forward(req, resp);
+        } else if (action.startsWith("/logout")) {
+            req.getRequestDispatcher("logout.jsp").forward(req, resp);
         } else {
             req.getRequestDispatcher("error.jsp").forward(req, resp);
         }
@@ -77,7 +79,7 @@ public class MainServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
         String action = getAction(req);
         DatabaseManager manager = (DatabaseManager) req.getSession().getAttribute("db_manager");
 
@@ -92,20 +94,24 @@ public class MainServlet extends HttpServlet {
                 resp.sendRedirect(resp.encodeRedirectURL("menu"));
             } catch (Exception e) {
                 req.setAttribute("message", e.getMessage());
-                req.getRequestDispatcher("error.jsp").forward(req, resp);
+                try {
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
-        } else if (action.equals("/clear")) {
+        } else if (action.startsWith("/clear")) {
             clear(manager, req, resp);
-        } else if (action.equals("/addRecord")) {
+        } else if (action.startsWith("/addRecord")) {
             String page = "create.jsp";
             forward(req, resp, manager, page);
-        } else if (action.equals("/table")) {
+        } else if (action.startsWith("/table")) {
             table(manager, req, resp);
-        } else if (action.equals("/find")) {
+        } else if (action.startsWith("/find")) {
             find(manager, req, resp);
-        } else if (action.equals("/create")) {
+        } else if (action.startsWith("/create")) {
             create(manager, req, resp);
-        } else if (action.equals("/delete")) {
+        } else if (action.startsWith("/delete")) {
         delete(manager, req, resp);
         }
     }
@@ -117,7 +123,7 @@ public class MainServlet extends HttpServlet {
         try {
             service.deleteRecord(manager, tableName, keyName, keyValue);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
-        } catch (ServletException | SQLException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -133,7 +139,7 @@ public class MainServlet extends HttpServlet {
             }
             service.create(manager, tableName, inputData);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
-        } catch (ServletException | SQLException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -153,7 +159,7 @@ public class MainServlet extends HttpServlet {
             }
             req.setAttribute("table", table);
             req.getRequestDispatcher("find.jsp").forward(req, resp);
-        } catch (ServletException | SQLException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -171,7 +177,7 @@ public class MainServlet extends HttpServlet {
         try {
             service.table(manager, tableName, primaryKey, columnParameters);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
-        } catch (ServletException | SQLException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -182,7 +188,7 @@ public class MainServlet extends HttpServlet {
             req.setAttribute("columnCount", getColumnCount(manager, tableName));
             req.setAttribute("tableName", tableName);
             req.getRequestDispatcher(page).forward(req, resp);
-        } catch (ServletException | IOException | SQLException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -196,7 +202,7 @@ public class MainServlet extends HttpServlet {
         try {
             service.clear(manager, tableName);
             req.getRequestDispatcher("success.jsp").forward(req, resp);
-        } catch (ServletException | SQLException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -206,7 +212,7 @@ public class MainServlet extends HttpServlet {
         req.setAttribute("tables", tableNames);
         try {
             req.getRequestDispatcher("list.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
+        } catch (Exception e) {
             error(req, resp, e);
         }
     }
@@ -216,7 +222,7 @@ public class MainServlet extends HttpServlet {
         try {
             e.printStackTrace();
             req.getRequestDispatcher("error.jsp").forward(req, resp);
-        } catch (ServletException | IOException e1) {
+        } catch (Exception e1) {
             e.printStackTrace();
         }
     }

@@ -12,12 +12,12 @@
         <tr>
             <c:forEach begin="1" end="${columnCount}" varStatus="loop">
         <tr>
-            <td>Column name ${loop.count}</td>
+            <td>${loop.count} Type column name</td>
             <td><label>
                 <input type="text" name="columnName${loop.count}"/>
             </label></td>
 
-            <td>Column value ${loop.count}</td>
+            <td>${loop.count} Type column value </td>
             <td><label>
                 <input type="text" name="columnValue${loop.count}"/>
             </label></td>
@@ -29,6 +29,7 @@
             <td><input type="submit" value="create"/></td>
         </tr>
     </table>
+    Back to <a href="menu">menu</a><br>
 </form>
 </body>
 </html>

@@ -4,16 +4,16 @@
     <head>
         <title>SQLCmd</title>
     </head>
-    <body>
-        <table border = "1">
+    Available tables:<br>
+        <br><table border = "1">
             <c:forEach items="${tables}" var="table" varStatus="loop">
                 <tr><td>${loop.count}</td>
                     <td align="center">
-                            ${table}
+                        ${table}
                     </td>
                     </tr>
             </c:forEach>
-        </table>
-        <a href="menu">menu</a><br>
+        </table><br>
+        Back to <a href="menu">menu</a><br>
     </body>
 </html>

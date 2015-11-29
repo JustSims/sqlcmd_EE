@@ -13,18 +13,17 @@ public interface Service {
 
     List<String> commandsList();
 
-    DatabaseManager connect(String databaseName, String userName, String password);
+    DatabaseManager connect(String databaseName, String userName, String password) throws ServiceException;
 
-    List<String> find(DatabaseManager manager, String tableName) throws SQLException;
+    List<String> find(DatabaseManager manager, String tableName) throws ServiceException;
 
-    Set<String> list(DatabaseManager manager) throws SQLException;
+    Set<String> list(DatabaseManager manager) throws ServiceException;
 
-    void clear(DatabaseManager manager, String tableName) throws SQLException;
+    void clear(DatabaseManager manager, String tableName) throws ServiceException;
 
-    void create(DatabaseManager manager, String tableName, Map<String, Object> inputData);
+    void create(DatabaseManager manager, String tableName, Map<String, Object> inputData) throws ServiceException;
 
-    void table(DatabaseManager manager, String tableName, String keyName, Map<String, Object> columnParameters)
-            throws SQLException;
+    void table(DatabaseManager manager, String tableName, String keyName, Map<String, Object> columnParameters) throws ServiceException;
 
-    void deleteRecord(DatabaseManager manager, String tableName, String keyName, String keyValue) throws SQLException;
+    void deleteRecord(DatabaseManager manager, String tableName, String keyName, String keyValue) throws ServiceException;
 }

@@ -6,7 +6,7 @@
     </head>
     <body>
         Oops! Something went wrong. ${message}<br>
-        <a href="menu">menu</a><br>
+        Back to <a href="menu">menu</a><br>
     </body>
 </html>
 
