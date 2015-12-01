@@ -13,7 +13,7 @@ public interface DatabaseManager {
 
     int getSize(String tableName) throws SQLException;
 
-    Set<String> getTableNames() throws SQLException;
+    Set<String> getTableData() throws SQLException;
 
     void connect(String database, String userName, String password) throws SQLException;
 

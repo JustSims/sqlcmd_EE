@@ -2,12 +2,9 @@ package ua.com.juja.sqlcmd_homework.sqlcmd.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.com.juja.sqlcmd_homework.model.DataSet;
-import ua.com.juja.sqlcmd_homework.model.DataSetImplemented;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +26,7 @@ public abstract class DatabaseManagerTest {
 
     @Test
     public void testGetAllTableNames() throws SQLException {
-        Set<String> tableNames = manager.getTableNames();
+        Set<String> tableNames = manager.getTableData();
         assertEquals("[user, test]", tableNames.toString());
     }
 

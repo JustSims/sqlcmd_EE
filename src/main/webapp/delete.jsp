@@ -27,6 +27,7 @@
       <td><input type="submit" value="delete"/></td>
     </tr>
   </table>
+  Back to <a href="menu">menu</a><br>
 </form>
 </body>
 </html>

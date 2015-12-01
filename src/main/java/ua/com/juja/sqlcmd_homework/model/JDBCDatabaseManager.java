@@ -81,7 +81,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public Set<String> getTableNames() {
+    public Set<String> getTableData() {
         Set<String> tables = new LinkedHashSet<String>();
         try {
             Statement stmt = connection.createStatement();
