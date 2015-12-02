@@ -9,7 +9,7 @@ import java.util.*;
  * Created by Sims on 05/11/2015.
  */
 @Component
-public class ConnectionServiceImpl implements ConnectionService {
+public class ServiceImpl implements Service {
 
     @Autowired
     private DatabaseManagerFactory factory;

@@ -34,7 +34,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         return connection!= null;
     }
 
-    //    private String getValuesFormated(DataSet input, String format) {
+//    private String getValuesFormated(DataSet input, String format) {
 //        String values = "";
 //        for(Object value: input.getValues()){
 //            values += String.format(format, value);

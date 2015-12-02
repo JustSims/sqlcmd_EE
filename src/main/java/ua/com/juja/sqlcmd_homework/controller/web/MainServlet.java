@@ -3,7 +3,7 @@ package ua.com.juja.sqlcmd_homework.controller.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
-import ua.com.juja.sqlcmd_homework.service.ConnectionService;
+import ua.com.juja.sqlcmd_homework.service.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MainServlet extends HttpServlet {
 
     @Autowired
-    private ConnectionService service;
+    private Service service;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

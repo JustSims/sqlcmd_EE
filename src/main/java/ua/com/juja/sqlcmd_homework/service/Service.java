@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Sims on 05/11/2015.
  */
-public interface ConnectionService {
+public interface Service {
 
     List<String> commandsList();
 
