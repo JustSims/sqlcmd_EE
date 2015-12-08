@@ -1,4 +1,4 @@
-package ua.com.juja.sqlcmd_homework.sqlcmd.model;
+package ua.com.juja.sqlcmd_homework.model;
 
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager;
