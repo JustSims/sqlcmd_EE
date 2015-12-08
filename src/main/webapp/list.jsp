@@ -14,6 +14,6 @@
                     </tr>
             </c:forEach>
         </table><br>
-        Back to <a href="menu">menu</a><br>
+    Back to <a href="menu">menu</a><br>
     </body>
 </html>
