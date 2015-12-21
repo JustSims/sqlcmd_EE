@@ -5,9 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sims on 17/12/2015.
@@ -19,20 +25,125 @@ public class MainController {
     @Autowired
     private Service service;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String main() {
+        return "redirect:menu";
+    }
+
     @RequestMapping(value = "/help", method = RequestMethod.GET)
     public String help() {
         return "help";
     }
 
+    @RequestMapping(value = "/connect", method = RequestMethod.GET)
+    public String connect(HttpSession session) {
+        if (getManager(session) == null) {
+            return "connect";
+        } else {
+            return "menu";
+        }
+    }
+
+    @RequestMapping(value = "/connect", method = RequestMethod.POST)
+    public String connecting(HttpServletRequest req, HttpSession session) {
+        DatabaseManager manager;
+        String databaseName = req.getParameter("dbname");
+        String userName = req.getParameter("username");
+        String password = req.getParameter("password");
+        try {
+            manager = service.connect(databaseName, userName, password);
+            session.setAttribute("db_manager", manager);
+            return "redirect:menu";
+        } catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public String menu(HttpServletRequest request) {
-        request.setAttribute("items", service.commandsList());
+    public String menu(HttpServletRequest req) {
+        req.setAttribute("items", service.commandsList());
         return "menu";
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(HttpServletRequest req, HttpSession session) {
+        DatabaseManager manager = getManager(session);
+        if (manager == null){
+            return "redirect:connect";
+        }
+        try {
+            req.setAttribute("tables", manager.getTableData());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "list";
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.GET)
+     public String find(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        if (manager == null){
+            return "redirect:connect";
+        }
+        return "tableName";
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    public String finding(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        String tableName = req.getParameter("tableName");
+        List<String> tableData = null;
+        try {
+            tableData = manager.find(tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+        req.setAttribute("table", getLists(tableData));
+        return "find";
+    }
+
+    @RequestMapping(value = "/clear", method = RequestMethod.GET)
+    public String clear(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        if (manager == null){
+            return "redirect:connect";
+        }
+        return "clear";
+    }
+
+    @RequestMapping(value = "/clear", method = RequestMethod.POST)
+    public String clearing(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+        String tableName = req.getParameter("tableName");
+        try {
+            manager.clear(tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "success";
+    }
 
 
+    private DatabaseManager getManager(HttpSession session) {
+        return (DatabaseManager) session.getAttribute("db_manager");
+    }
 
-
-
+    private List<List<String>> getLists(List<String> tableData) {
+        List<List<String>> table = new ArrayList<>(tableData.size() - 1);
+        int columnCount = Integer.parseInt(tableData.get(0));
+        for (int current = 1; current < tableData.size(); ) {
+            List<String> row = new ArrayList<>(columnCount);
+            for (int rowIndex = 0; rowIndex < columnCount; rowIndex++) {
+                row.add(tableData.get(current++));
+            }
+            table.add(row);
+        }
+        return table;
+    }
 }

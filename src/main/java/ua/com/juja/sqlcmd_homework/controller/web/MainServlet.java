@@ -183,8 +183,7 @@ public class MainServlet extends HttpServlet {
 
     private void list(DatabaseManager manager, HttpServletRequest req,
                       HttpServletResponse resp) throws Exception {
-            Set<String> tableNames = manager.getTableData();
-            req.setAttribute("tables", tableNames);
+            req.setAttribute("tables", manager.getTableData());
             jsp("list", req, resp);
     }
 
