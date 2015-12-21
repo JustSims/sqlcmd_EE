@@ -2,14 +2,12 @@ package ua.com.juja.sqlcmd_homework.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -168,6 +166,36 @@ public class MainController {
                         req.getParameter("columnValue" + index));
             }
             manager.create(tableName, inputData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/deleteRecord", method = RequestMethod.GET)
+    public String delete(HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        if (manager == null){
+            return "redirect:connect";
+        }
+        return "deleteRecord";
+    }
+
+    @RequestMapping(value = "/deleteRecord", method = RequestMethod.POST)
+    public String deleting(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        if (manager == null){
+            return "redirect:connect";
+        }
+
+        String tableName = req.getParameter("tableName");
+        String keyName = req.getParameter("keyName");
+        String keyValue = req.getParameter("keyValue");
+        try {
+            manager.deleteRecord(tableName, keyName, keyValue);
         } catch (SQLException e) {
             e.printStackTrace();
             return "error";

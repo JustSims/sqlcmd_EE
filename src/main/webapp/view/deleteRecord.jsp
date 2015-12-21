@@ -5,7 +5,7 @@
   <title>SQLCmd</title>
 </head>
 <body>
-<form action="delete" method="post">
+<form action="deleteRecord" method="post">
   <table>
     <tr>
       <td>Table name</td>
