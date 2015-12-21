@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sims on 17/12/2015.
@@ -130,6 +132,49 @@ public class MainController {
     }
 
 
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+
+        if (manager == null){
+            return "redirect:connect";
+        }
+        req.setAttribute("actionURL", "addRecord");
+        return "tableName";
+    }
+
+    @RequestMapping(value = "/addRecord", method = RequestMethod.POST)
+    public String addingRecord(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+        try {
+            String tableName = req.getParameter("tableName");
+            req.setAttribute("columnCount", getColumnCount(manager, tableName));
+            req.setAttribute("tableName", tableName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "create";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String creating(HttpServletRequest req, HttpSession session){
+        DatabaseManager manager = getManager(session);
+        String tableName = req.getParameter("tableName");
+        Map<String, Object> inputData = new HashMap<>();
+        try {
+            for (int index = 1; index <= getColumnCount(manager, tableName); index++) {
+                inputData.put(req.getParameter("columnName" + index),
+                        req.getParameter("columnValue" + index));
+            }
+            manager.create(tableName, inputData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "success";
+    }
+
     private DatabaseManager getManager(HttpSession session) {
         return (DatabaseManager) session.getAttribute("db_manager");
     }
@@ -146,4 +191,9 @@ public class MainController {
         }
         return table;
     }
+
+    private int getColumnCount(DatabaseManager manager, String tableName) throws SQLException {
+        return Integer.parseInt(manager.find(tableName).get(0));
+    }
+
 }

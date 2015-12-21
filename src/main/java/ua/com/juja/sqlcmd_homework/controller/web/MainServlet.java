@@ -165,7 +165,7 @@ public class MainServlet extends HttpServlet {
 
     private void prepare(HttpServletRequest req,
                          DatabaseManager manager) throws Exception{
-        String tableName = req.getParameter("tableName");
+            String tableName = req.getParameter("tableName");
             req.setAttribute("columnCount", getColumnCount(manager, tableName));
             req.setAttribute("tableName", tableName);
     }
