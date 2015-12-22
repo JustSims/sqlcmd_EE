@@ -2,8 +2,12 @@ package ua.com.juja.sqlcmd_homework.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
 
@@ -36,7 +40,10 @@ public class MainController {
     }
 
     @RequestMapping(value = "/connect", method = RequestMethod.GET)
-    public String connect(HttpSession session) {
+    public String connect(HttpSession session, Model model) {
+        String page = (String) session.getAttribute("from-page");
+        session.removeAttribute("from-page");
+        model.addAttribute("connection", new Connection(page));
         if (getManager(session) == null) {
             return "connect";
         } else {
@@ -45,35 +52,38 @@ public class MainController {
     }
 
     @RequestMapping(value = "/connect", method = RequestMethod.POST)
-    public String connecting(HttpServletRequest req, HttpSession session) {
-        DatabaseManager manager;
-        String databaseName = req.getParameter("dbname");
-        String userName = req.getParameter("username");
-        String password = req.getParameter("password");
+    public String connecting(@ModelAttribute("connection")Connection connection,
+                             HttpSession session, Model model) {
+
         try {
-            manager = service.connect(databaseName, userName, password);
+            DatabaseManager manager = service.connect(connection.getDbName(),
+                    connection.getUserName(),
+                    connection.getPassword());
             session.setAttribute("db_manager", manager);
-            return "redirect:menu";
+            return "redirect:" + connection.getFromPage();
         } catch (Exception e){
             e.printStackTrace();
+            model.addAttribute("message", e.getMessage());
             return "error";
         }
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public String menu(HttpServletRequest req) {
-        req.setAttribute("items", service.commandsList());
+    public String menu(Model model) {
+        model.addAttribute("items", service.commandsList());
         return "menu";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(HttpServletRequest req, HttpSession session) {
+    public String list(Model model, HttpSession session) {
         DatabaseManager manager = getManager(session);
+
         if (manager == null){
+            session.setAttribute("from-page", "/list");
             return "redirect:connect";
         }
         try {
-            req.setAttribute("tables", manager.getTableData());
+            model.addAttribute("tables", manager.getTableData());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,20 +91,21 @@ public class MainController {
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
-     public String find(HttpServletRequest req, HttpSession session){
+    public String find(Model model, HttpSession session) {
         DatabaseManager manager = getManager(session);
 
         if (manager == null){
+            session.setAttribute("from-page", "/find");
             return "redirect:connect";
         }
         return "tableName";
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    public String finding(HttpServletRequest req, HttpSession session){
+    @RequestMapping(value = "/find", params = { "tableName" },
+            method = RequestMethod.POST)
+    public String finding(Model model, @RequestParam(value = "tableName") String tableName, HttpSession session){
         DatabaseManager manager = getManager(session);
 
-        String tableName = req.getParameter("tableName");
         List<String> tableData = null;
         try {
             tableData = manager.find(tableName);
@@ -102,12 +113,12 @@ public class MainController {
             e.printStackTrace();
             return "error";
         }
-        req.setAttribute("table", getLists(tableData));
+        model.addAttribute("table", getLists(tableData));
         return "find";
     }
 
     @RequestMapping(value = "/clear", method = RequestMethod.GET)
-    public String clear(HttpServletRequest req, HttpSession session){
+    public String clear(Model model, HttpSession session){
         DatabaseManager manager = getManager(session);
 
         if (manager == null){
@@ -116,10 +127,9 @@ public class MainController {
         return "clear";
     }
 
-    @RequestMapping(value = "/clear", method = RequestMethod.POST)
-    public String clearing(HttpServletRequest req, HttpSession session){
+    @RequestMapping(value = "/clear", params = { "tableName"}, method = RequestMethod.POST)
+    public String clearing(Model model, @RequestParam(value = "tableName") String tableName, HttpSession session){
         DatabaseManager manager = getManager(session);
-        String tableName = req.getParameter("tableName");
         try {
             manager.clear(tableName);
         } catch (SQLException e) {
@@ -131,23 +141,22 @@ public class MainController {
 
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(HttpServletRequest req, HttpSession session){
+    public String create(Model model, HttpSession session){
         DatabaseManager manager = getManager(session);
 
         if (manager == null){
             return "redirect:connect";
         }
-        req.setAttribute("actionURL", "addRecord");
+        model.addAttribute("actionURL", "addRecord");
         return "tableName";
     }
 
-    @RequestMapping(value = "/addRecord", method = RequestMethod.POST)
-    public String addingRecord(HttpServletRequest req, HttpSession session){
+    @RequestMapping(value = "/addRecord", params = { "tableName"}, method = RequestMethod.POST)
+    public String addingRecord(Model model, @RequestParam(value = "tableName") String tableName, HttpSession session){
         DatabaseManager manager = getManager(session);
         try {
-            String tableName = req.getParameter("tableName");
-            req.setAttribute("columnCount", getColumnCount(manager, tableName));
-            req.setAttribute("tableName", tableName);
+            model.addAttribute("columnCount", getColumnCount(manager, tableName));
+            model.addAttribute("tableName", tableName);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
@@ -155,18 +164,19 @@ public class MainController {
         return "create";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String creating(HttpServletRequest req, HttpSession session){
-        DatabaseManager manager = getManager(session);
-        String tableName = req.getParameter("tableName");
-        Map<String, Object> inputData = new HashMap<>();
+    @RequestMapping(value = "/create", params = { "tableName" }, method = RequestMethod.POST)
+    public String creating(HttpSession session, @RequestParam(value = "tableName") String tableName,
+                           HttpServletRequest req) {
+
         try {
+            DatabaseManager manager = getManager(session);
+            Map<String, Object> inputData = new HashMap<>();
             for (int index = 1; index <= getColumnCount(manager, tableName); index++) {
                 inputData.put(req.getParameter("columnName" + index),
                         req.getParameter("columnValue" + index));
+                manager.create(tableName, inputData);
             }
-            manager.create(tableName, inputData);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -184,19 +194,19 @@ public class MainController {
     }
 
     @RequestMapping(value = "/deleteRecord", method = RequestMethod.POST)
-    public String deleting(HttpServletRequest req, HttpSession session){
+    public String deleting(Model model,
+                           @RequestParam(value = "tableName") String tableName,
+                           @RequestParam(value = "keyName") String keyName,
+                           @RequestParam(value = "keyValue") String keyValue,
+                           HttpSession session){
         DatabaseManager manager = getManager(session);
 
         if (manager == null){
             return "redirect:connect";
         }
-
-        String tableName = req.getParameter("tableName");
-        String keyName = req.getParameter("keyName");
-        String keyValue = req.getParameter("keyValue");
         try {
             manager.deleteRecord(tableName, keyName, keyValue);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -220,7 +230,7 @@ public class MainController {
         return table;
     }
 
-    private int getColumnCount(DatabaseManager manager, String tableName) throws SQLException {
+    private int getColumnCount(DatabaseManager manager, String tableName) throws Exception {
         return Integer.parseInt(manager.find(tableName).get(0));
     }
 
