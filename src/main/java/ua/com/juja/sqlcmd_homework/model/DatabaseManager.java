@@ -11,9 +11,7 @@ import java.util.Set;
 public interface DatabaseManager {
     List<String> find(String tableName) throws SQLException;
 
-    int getSize(String tableName) throws SQLException;
-
-    Set<String> getTableData() throws SQLException;
+    List<List<String>> getTableData(String tableName);
 
     void connect(String database, String userName, String password) throws SQLException;
 
@@ -21,14 +19,12 @@ public interface DatabaseManager {
 
     void create(String tableName, Map<String, Object> inputData) throws SQLException;
 
-    void update(String tableName, int id, DataSet newValue);
-
-    Set<String> getTableColumns(String tableName);
-
     boolean isConnected();
 
     void table(String tableName, String keyName, Map<String, Object> columnParameters) throws SQLException;
 
     void deleteRecord(String tableName, String keyName, String keyValue) throws SQLException;
+
+    Set<String> getTableNames();
 
 }

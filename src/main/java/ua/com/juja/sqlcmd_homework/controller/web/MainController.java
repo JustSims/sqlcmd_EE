@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
 
@@ -82,11 +81,7 @@ public class MainController {
             session.setAttribute("from-page", "/list");
             return "redirect:connect";
         }
-        try {
-            model.addAttribute("tables", manager.getTableData());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        model.addAttribute("tables", service.tables(manager));
         return "list";
     }
 

@@ -29,4 +29,9 @@ public class ServiceImpl implements Service {
             throw new ServiceException("Connection error", e);
         }
     }
+
+    @Override
+    public Set<String> tables(DatabaseManager manager) {
+        return manager.getTableNames();
+    }
 }

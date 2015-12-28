@@ -14,6 +14,4 @@ public interface DataSet {
     Set<String> getNames();
 
     Object get(String name);
-
-    void updateFrom(DataSet newValue);
 }

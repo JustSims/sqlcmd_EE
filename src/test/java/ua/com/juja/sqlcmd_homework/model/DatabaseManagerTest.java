@@ -26,7 +26,14 @@ public abstract class DatabaseManagerTest {
 
     @Test
     public void testGetAllTableNames() throws SQLException {
-        Set<String> tableNames = manager.getTableData();
+        // given
+        manager.getTableData("user");
+        manager.getTableData("test");
+
+        // when
+        Set<String> tableNames = manager.getTableNames();
+
+        // then
         assertEquals("[user, test]", tableNames.toString());
     }
 

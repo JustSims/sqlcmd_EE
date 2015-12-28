@@ -30,15 +30,6 @@ public class DataSetImplemented implements DataSet {
     }
 
     @Override
-    public void updateFrom(DataSet newValue) {
-        Set<String> columns = newValue.getNames();
-        for (String name: columns) {
-            Object data = newValue.get(name);
-            put(name, data);
-        }
-    }
-
-    @Override
     public String toString() {
         return "{" +
                 "names:" + getNames().toString() + ", " +

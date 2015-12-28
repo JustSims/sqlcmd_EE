@@ -26,6 +26,7 @@ public class ServiceImplTest {
 
     @Autowired
     private Service service;
+    private String tableName;
 
 
     @Test
@@ -39,9 +40,8 @@ public class ServiceImplTest {
     public void listTest() throws ServiceException, SQLException {
         //given
         DatabaseManager manager = service.connect("mydb_home", "postgres", "postgres");
-
         //when
-        Set<String> tableNames = manager.getTableData();
+        List<List<String>> tableNames = manager.getTableData(tableName);
         //then
         assertEquals("[user, test]", tableNames.toString());
     }
