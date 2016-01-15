@@ -9,11 +9,12 @@ import java.util.Set;
  * Created by Sims on 12/09/2015.
  */
 public interface DatabaseManager {
+
     List<String> find(String tableName) throws SQLException;
 
     List<List<String>> getTableData(String tableName);
 
-    void connect(String database, String userName, String password) throws SQLException;
+    void connect(String database, String userName, String password);
 
     void clear(String tableName) throws SQLException;
 
@@ -26,5 +27,9 @@ public interface DatabaseManager {
     void deleteRecord(String tableName, String keyName, String keyValue) throws SQLException;
 
     Set<String> getTableNames();
+
+    String getDatabaseName();
+
+    String getUserName();
 
 }

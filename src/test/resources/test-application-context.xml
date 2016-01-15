@@ -7,13 +7,13 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <context:annotation-config/>
-    <context:component-scan base-package="ua.com.juja.sqlcmd_homework.service"/>
+<context:annotation-config/>
+<context:component-scan base-package="ua.com.juja.sqlcmd"/>
 
-    <bean id="databaseManagerFactory" class="ua.com.juja.sqlcmd_homework.service.DatabaseManagerFactoryImpl">
-        <property name="className" value="ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager"/>
-    </bean>
+<bean id="JDBCDatabaseManager" class="ua.com.juja.sqlcmd_homework.model.JDBCDatabaseManager"/>
+
+<bean id="service" class="ua.com.juja.sqlcmd_homework.service.ServiceImpl">
+    <lookup-method name="getManager" bean="JDBCDatabaseManager"/>
+</bean>
 
 </beans>
-
-

@@ -1,12 +1,10 @@
 package ua.com.juja.sqlcmd_homework.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.com.juja.sqlcmd_homework.model.DatabaseManager;
 import ua.com.juja.sqlcmd_homework.service.Service;
 
@@ -43,6 +41,7 @@ public class MainController {
         String page = (String) session.getAttribute("from-page");
         session.removeAttribute("from-page");
         model.addAttribute("connection", new Connection(page));
+
         if (getManager(session) == null) {
             return "connect";
         } else {
@@ -229,4 +228,10 @@ public class MainController {
         return Integer.parseInt(manager.find(tableName).get(0));
     }
 
+    @RequestMapping (value = "/actions/{userName}", method = RequestMethod.GET)
+    public String actions (Model model,
+                          @PathVariable(value = "userName") String userName) {
+        model.addAttribute("actions", service.getAllFor(userName));
+        return "actions";
+    }
 }

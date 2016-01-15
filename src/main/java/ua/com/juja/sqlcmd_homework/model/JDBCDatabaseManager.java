@@ -1,5 +1,6 @@
 package ua.com.juja.sqlcmd_homework.model;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -11,25 +12,35 @@ import java.util.*;
 /**
  * Created by Sims on 02.09.2015.
  */
+
 @Component
 public class JDBCDatabaseManager implements DatabaseManager {
+
     private Connection connection;
     private JdbcTemplate template;
+    private String database;
+    private String userName;
 
     @Override
-    public void connect(String database, String userName, String password) throws SQLException {
+    public void connect(String database, String userName, String password){
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Please add jdbc jar to project", e);
         }
         try {
+            if (connection != null) {
+                connection.close();
+            }
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/" + database, userName,
                     password);
+            this.database = database;
+            this.userName = userName;
             template = new JdbcTemplate(new SingleConnectionDataSource(connection, false));
         } catch (SQLException e) {
             connection = null;
+            template = null;
             throw new RuntimeException(String.format("Couldnt get connection" +
                     " for model: %s user %s", database, userName), e);
         }
@@ -85,18 +96,15 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
     @Override
     public void table(String tableName, String primaryKey, Map<String, Object> columnParameters) throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate("CREATE TABLE " + tableName +
-                "(" + primaryKey + " INT  PRIMARY KEY NOT NULL" +
-                getParameters(columnParameters) + ")");
-        stmt.close();
+        template.execute(String.format("CREATE TABLE IF NOT EXISTS public.%s " +
+                        "(%s INT  PRIMARY KEY NOT NULL %s)",
+                tableName, primaryKey, getParameters(columnParameters)));
     }
 
     @Override
     public void deleteRecord(String tableName, String keyName, String keyValue) throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate("DELETE FROM public. " + tableName + " WHERE " + keyName + " = '" + keyValue + "'");
-        stmt.close();
+        template.update(String.format("DELETE FROM public.%s WHERE %s = '%s'",
+                tableName, keyName, keyValue));
     }
 
     private String getParameters(Map<String, Object> columnParameters) {
@@ -109,40 +117,22 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
     @Override
     public void clear(String tableName) throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate("DELETE FROM public." + tableName);
-        stmt.close();
-
+        template.execute("DELETE FROM public." + tableName);
     }
 
     @Override
     public void create(String tableName, Map<String, Object> inputData) {
-        try {
-            Statement stmt = connection.createStatement();
+        StringJoiner keyJoiner = new StringJoiner(", ");
+        StringJoiner valueJoiner = new StringJoiner("', '", "'", "'");
 
-            stmt.executeUpdate("INSERT INTO public." + tableName + " (" + getColumnNames(inputData) + ")" +
-                    "VALUES (" + getColumnValues(inputData) + ")");
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String getColumnNames(Map<String, Object> inputData) {
-        String keys = "";
         for (Map.Entry<String, Object> pair : inputData.entrySet()) {
-            keys += pair.getKey() + ", ";
+            keyJoiner.add(pair.getKey());
+            valueJoiner.add(pair.getValue().toString());
         }
-        return keys.substring(0, keys.length() - 2);
+        template.update(String.format("INSERT INTO public.%s(%s) values (%s)",
+                tableName, keyJoiner.toString(), valueJoiner.toString()));
     }
 
-    private String getColumnValues(Map<String, Object> inputData) {
-        String values = "";
-        for (Map.Entry<String, Object> pair : inputData.entrySet()) {
-            values += "'" + pair.getValue() + "', ";
-        }
-        return values.substring(0, values.length() - 2);
-    }
 
     @Override
     public Set<String> getTableNames() {
@@ -153,5 +143,15 @@ public class JDBCDatabaseManager implements DatabaseManager {
                     }
                 }
         ));
+    }
+
+    @Override
+    public String getDatabaseName() {
+        return database;
+    }
+
+    @Override
+    public String getUserName() {
+        return userName;
     }
 }
